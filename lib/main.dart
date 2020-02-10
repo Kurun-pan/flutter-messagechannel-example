@@ -26,11 +26,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static const _channel = BasicMessageChannel<String>('com.example.messagechannel/interop', StringCodec());
+  //static const _channel = BasicMessageChannel<dynamic>('com.example.messagechannel/interop', JSONMessageCodec());
 
   String _platformMessage;
 
   void _sendMessage() async {
-    final String reply = await _channel.send('Hello World form Dart');
+    final String reply = await _channel.send('Hello World from Dart');
+    /*
+    final reply = await _channel.send(<String, dynamic>{
+      'name': 'Dart',
+      'launch': 2018,
+    });
+    */
     print(reply);
   }
 
@@ -44,6 +51,15 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() => _platformMessage = message);
       return 'Reply from Dart';
     });
+    /*
+    _channel.setMessageHandler((dynamic message) async {
+      print('Received message = $message');
+      setState(() => _platformMessage = '$message');
+      return <String, dynamic>{
+        'reply': 'Dart reply',
+      };
+    });
+    */
 
     // Send message to platform
     _sendMessage();
